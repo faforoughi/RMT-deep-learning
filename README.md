@@ -20,29 +20,27 @@ The central question is:
 
 For a random matrix with aspect ratio
 
-\[
+$$
 \gamma = \frac{\min(n,p)}{\max(n,p)},
-\]
+$$
 
 the Marchenko–Pastur distribution has support
 
-\[
+$$
 \lambda_{\pm} = (1 \pm \sqrt{\gamma})^2.
-\]
+$$
 
 For the square hidden-to-hidden weight matrices studied here,
 
-\[
+$$
 \gamma = 1,
-\]
+$$
 
 which gives
 
-\[
-\lambda_- = 0,
-\qquad
-\lambda_+ = 4.
-\]
+$$
+\lambda_- = 0, \qquad \lambda_+ = 4.
+$$
 
 The Marchenko–Pastur law is used as a **random-matrix reference model**. Trained neural-network weights do not satisfy the classical i.i.d. assumptions, so deviations from the MP bulk are interpreted as empirical spectral structure rather than violations of the theorem.
 
@@ -60,15 +58,13 @@ The experiments use:
 - random seed: `42`
 - hidden widths: `64`, `128`, `256`, and `512`
 
-Spectral statistics are recorded at:
-
-`epoch 0`, `1`, `5`, `10`, and `20`.
+Spectral statistics are recorded at `epoch 0`, `1`, `5`, `10`, and `20`.
 
 For each weight matrix, the analysis computes:
 
 - largest Gram-matrix eigenvalue
 - Marchenko–Pastur upper edge
-- ratio \(\lambda_{\max}/\lambda_{MP+}\)
+- ratio $\lambda_{\max}/\lambda_{MP+}$
 - fraction of eigenvalues above the MP edge
 - effective rank
 
@@ -78,24 +74,22 @@ For each weight matrix, the analysis computes:
 
 ### 1. Spectral Departure During Training
 
-At initialization, the largest eigenvalues are close to the Marchenko–Pastur upper edge.
-
-During training, the spectra progressively depart from the random-matrix baseline.
+At initialization, the largest eigenvalues are close to the Marchenko–Pastur upper edge. During training, the spectra progressively depart from the random-matrix baseline.
 
 For the hidden-to-hidden layer:
 
 | Width | Epoch 0 | Epoch 20 |
 |------:|--------:|---------:|
-| 64  | 0.98 | 1.65 |
+| 64 | 0.98 | 1.65 |
 | 128 | 0.94 | 2.70 |
 | 256 | 0.98 | 4.39 |
 | 512 | 0.97 | 6.71 |
 
 Values represent:
 
-\[
+$$
 \frac{\lambda_{\max}}{\lambda_{MP+}}
-\]
+$$
 
 The departure becomes substantially stronger for wider networks.
 
@@ -105,13 +99,11 @@ The departure becomes substantially stronger for wider networks.
 
 ### 2. Effective Rank
 
-Training also changes the distribution of spectral mass.
-
-The effective rank decreases consistently during optimization:
+Training also changes the distribution of spectral mass. The effective rank decreases consistently during optimization:
 
 | Width | Epoch 0 | Epoch 20 |
 |------:|--------:|---------:|
-| 64  | 38.92 | 25.56 |
+| 64 | 38.92 | 25.56 |
 | 128 | 77.65 | 45.35 |
 | 256 | 154.85 | 86.43 |
 | 512 | 310.54 | 177.53 |
@@ -124,9 +116,7 @@ This indicates increasing concentration of spectral mass in fewer dominant direc
 
 ### 3. Spectral Outliers
 
-At initialization, no eigenvalues of the analyzed hidden layer lie above the MP upper edge.
-
-During training, spectral outliers emerge.
+At initialization, no eigenvalues of the analyzed hidden layer lie above the MP upper edge. During training, spectral outliers emerge.
 
 Interestingly, wider networks do not necessarily produce a larger **fraction** of outliers. Instead, they can produce substantially stronger extreme eigenvalues.
 
@@ -134,7 +124,7 @@ At epoch 20:
 
 | Width | Eigenvalues Above MP Edge |
 |------:|--------------------------:|
-| 64  | 9.38% |
+| 64 | 9.38% |
 | 128 | 6.25% |
 | 256 | 3.52% |
 | 512 | 1.76% |
@@ -149,19 +139,7 @@ Thus, the **number of outliers** and the **strength of the largest outlier** cap
 
 A separate reproducible experiment with width `512` compares the complete spectrum at initialization and after 20 epochs.
 
-The largest eigenvalue changes from approximately
-
-\[
-3.89
-\]
-
-at initialization to
-
-\[
-26.97
-\]
-
-after training.
+The largest eigenvalue changes from approximately **3.89** at initialization to **26.97** after training.
 
 At initialization, the spectrum remains close to the Marchenko–Pastur bulk. After optimization, several large spectral outliers appear beyond the MP upper edge.
 
@@ -173,17 +151,11 @@ At initialization, the spectrum remains close to the Marchenko–Pastur bulk. Af
 
 The experiments show three consistent empirical patterns:
 
-1. **Random-like initialization**
+1. **Random-like initialization** — The initial spectra are close to the Marchenko–Pastur reference, with the largest eigenvalues near the theoretical upper edge.
 
-   The initial spectra are close to the Marchenko–Pastur reference, with the largest eigenvalues near the theoretical upper edge.
+2. **Spectral restructuring during optimization** — Training produces eigenvalue outliers beyond the MP bulk while reducing effective rank.
 
-2. **Spectral restructuring during optimization**
-
-   Training produces eigenvalue outliers beyond the MP bulk while reducing effective rank.
-
-3. **Width-dependent spectral behavior**
-
-   Wider networks exhibit substantially stronger extreme spectral outliers, although the fraction of eigenvalues outside the MP bulk can be smaller.
+3. **Width-dependent spectral behavior** — Wider networks exhibit substantially stronger extreme spectral outliers, although the fraction of eigenvalues outside the MP bulk can be smaller.
 
 These observations suggest that optimization introduces structured correlations into weight matrices that are absent at random initialization.
 
@@ -194,13 +166,11 @@ The results should not be interpreted as proving a causal relationship between s
 ## Repository Structure
 
 ```text
-rmt-deep-learning/
-│
+RMT-deep-learning/
 ├── README.md
 ├── LICENSE
 ├── requirements.txt
 ├── run_width_study.py
-│
 ├── src/
 │   ├── __init__.py
 │   ├── model.py
@@ -208,13 +178,11 @@ rmt-deep-learning/
 │   ├── rmt_utils.py
 │   ├── plot_results.py
 │   └── plot_spectrum_comparison.py
-│
 └── results/
     ├── spectral_width_64.json
     ├── spectral_width_128.json
     ├── spectral_width_256.json
     ├── spectral_width_512.json
-    │
     └── figures/
         ├── spectral_dynamics.png
         ├── effective_rank.png
@@ -227,34 +195,18 @@ rmt-deep-learning/
 ## Installation
 
 ```bash
-git clone <YOUR-REPOSITORY-URL>
-cd rmt-deep-learning
-
+git clone https://github.com/faforoughi/RMT-deep-learning.git
+cd RMT-deep-learning
 pip install -r requirements.txt
 ```
 
----
-
 ## Reproducing the Width Experiment
-
-Run:
 
 ```bash
 python run_width_study.py
 ```
 
-This trains networks with widths:
-
-```text
-64
-128
-256
-512
-```
-
-and stores the spectral statistics in the `results/` directory.
-
----
+This trains networks with widths `64`, `128`, `256`, and `512` and stores the spectral statistics in the `results/` directory.
 
 ## Generate the Spectral-Dynamics Figure
 
@@ -266,11 +218,7 @@ results/spectral_width_256.json \
 results/spectral_width_512.json
 ```
 
----
-
 ## Reproduce the Spectrum Comparison
-
-Run:
 
 ```bash
 python -m src.plot_spectrum_comparison
